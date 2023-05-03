@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import { BiImageAlt } from "react-icons/bi";
 import FeedCard from "@/components/FeedCard";
@@ -21,8 +21,8 @@ interface HomeProps {
 
 export default function Home(props: HomeProps) {
   const { user } = useCurrentUser();
-
-  const { mutate } = useCreateTweet();
+  const { tweets = props.tweets as Tweet[] } = useGetAllTweets();
+  const { mutateAsync } = useCreateTweet();
 
   const [content, setContent] = useState("");
   const [imageURL, setImageURL] = useState("");
@@ -68,12 +68,14 @@ export default function Home(props: HomeProps) {
     input.click();
   }, [handleInputChangeFile]);
 
-  const handleCreateTweet = useCallback(() => {
-    mutate({
+  const handleCreateTweet = useCallback(async () => {
+    await mutateAsync({
       content,
       imageURL,
     });
-  }, [content, mutate, imageURL]);
+    setContent("");
+    setImageURL("");
+  }, [mutateAsync, content, imageURL]);
 
   return (
     <div>
@@ -121,7 +123,7 @@ export default function Home(props: HomeProps) {
             </div>
           </div>
         </div>
-        {props.tweets?.map((tweet) =>
+        {tweets?.map((tweet) =>
           tweet ? <FeedCard key={tweet?.id} data={tweet as Tweet} /> : null
         )}
       </Twitterlayout>
