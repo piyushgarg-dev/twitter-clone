@@ -6,6 +6,7 @@ const nextConfig = {
       "avatars.githubusercontent.com",
       "lh3.googleusercontent.com",
       "piyush-twitter-dev.s3.ap-south-1.amazonaws.com",
+      "i.imgur.com",
     ],
   },
 };
