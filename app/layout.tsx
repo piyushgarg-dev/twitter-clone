@@ -1,26 +1,31 @@
+"use client";
+
 import "@/styles/globals.css";
-import { Inter, Quicksand } from "next/font/google";
+import { Inter } from "next/font/google";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import type { AppProps } from "next/app";
 import { Toaster } from "react-hot-toast";
+import Twitterlayout from "@/components/FeedCard/Layout/TwitterLayout";
 
 const inter = Inter({ subsets: ["latin"] });
-const quickSand = Quicksand({ subsets: ["latin"] });
 
 const queryClient = new QueryClient();
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <div className={inter.className}>
+    <html lang="en">
       <QueryClientProvider client={queryClient}>
         <GoogleOAuthProvider clientId="1067474376899-8bn30uk5cl68cv6oqic6u0aopsgngg82.apps.googleusercontent.com">
-          <Component {...pageProps} />
+          <body className={inter.className}>{children}</body>
           <Toaster />
           <ReactQueryDevtools />
         </GoogleOAuthProvider>
       </QueryClientProvider>
-    </div>
+    </html>
   );
 }
